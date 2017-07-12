@@ -1,0 +1,24 @@
+span 	/*buddylist header*/
+{
+	font-size: 29px;
+}
+.modal-header, .modal-footer 	/*modal header and footer colors*/
+{
+	background-color: #69bba5;
+}
+.btn-lg 	/*addBuddy button style*/
+{
+	margin-top: -12px;
+	font-size: 14px !important;
+}
+.panel 		/*registration panel style*/
+{
+	padding: 10px;
+	border:2px solid black !important;
+	background-color: paleturquoise !important;
+}
+#heading 	/*registration header*/
+{
+	font-size: 20px;
+	color: purple;
+}

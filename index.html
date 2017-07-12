@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AngularJS Demo Features">
+    <meta name="author" content="Bhaskararao Gummidi">
+	<title>Angular JS Demo</title>
+	<link rel="icon" type="icon" href="./assets/icons/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="./assets/js/script.js"></script>
+<script src="./assets/js/dirPagination.js"></script>
+<body ng-controller="myCtrl">
+<div class="container"> 	<!-- container starting -->
+<h1><b>Buddy's list</b></h1>
+<hr>
+Search by: 
+<input type="text" name="search" ng-model="searchText" placeholder="Enter text to search">
+<button class="btn-primary btn-lg pull-right" data-toggle="modal" data-target="#addBuddy">Add Buddy</button>
+<hr>
+<div class="alert alert-info" ng-if="message">
+  <a href="#" class="close" ng-click="showMessage()" data-dismiss="alert">&times;</a>
+  {{message}} <strong>Successfully!</strong>
+</div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th ng-click="sort('name')">Name<input type="checkbox" name="sortbyemail">
+        <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="('glyphicon-chevron-up' :!reverse,'glyphicon-chevron-down':reverse)"></span>
+        </th>
+        <th ng-click="sort('email')">Email<input type="checkbox" name="sortbyemail">
+        <span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="('glyphicon-chevron-up' :!reverse,'glyphicon-chevron-down':reverse)"></span>
+        </th>
+        <th ng-click="sort('mobile')">Mobile No<input type="checkbox" name="sortbyMobile">
+        <span class="glyphicon sort-icon" ng-show="sortKey=='mobile'" ng-class="('glyphicon-chevron-up' :!reverse,'glyphicon-chevron-down':reverse)"></span>
+        </th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr dir-paginate="Buddy in Buddys | itemsPerPage:5 | orderBy:sortKey:reverse | filter :searchText">
+        <td>{{Buddy.name}}</td>
+        <td>{{Buddy.email}}</td>
+        <td>{{Buddy.mobile}}</td>
+        <td><button class="btn-md btn-success" ng-click="editBuddy(Buddy)" data-toggle="modal" data-target="#editBuddy">Edit</button></td>
+        <td><button class="btn-md btn-danger" data-toggle="modal" data-target="#deleteBuddy" ng-click="editBuddy(Buddy)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <dir-pagination-controls max-size="5" direction-links="true" boundry-links="true">
+  </dir-pagination-controls>
+ 	<hr>
+ 	<p id="heading"><b>Register to upgrade buddy premium</b></p>
+ 	<div class="row">		<!-- validation and images row -->
+ 	  <div class="col-lg-6">		<!-- validation column starting-->
+ 		<div class="panel panel-default">		<!-- panel starting -->
+ 		  <form name="myform" novalidate="novalidate" ng-submit="onSubmit(myform.$valid)">
+ 			<div class="row">  	<!-- name row starting -->
+				<div class="col-lg-4">
+					Fullname :
+				</div>
+				<div class="col-lg-8">
+				  <div class="form-group" ng-class="
+				  {
+				  	'has-error':myform.firstname.$invalid && (!myform.$pristine || myform.$submitted),
+				  	'has-success':myform.firstname.$valid && (!myform.$pristine || myform.$submitted)
+				  }
+				  ">
+					<input type="text" name="firstname" placeholder="Your name" class="form-control" ng-required="true" ng-model="formModel.firstname" ng-value="name" ng-minlength="5">
+					<p class="help-block" ng-show="myform.firstname.$error.required && (!myform.$pristine || myform.$submitted)">You name is required.</p>
+				  </div>
+				</div>
+			</div><br>		<!-- name row ending -->
+			<div class="row">	<!-- email row starting -->
+				<div class="col-lg-4">
+					Email :
+				</div>
+				<div class="col-lg-8">
+				  <div class="form-group" ng-class="
+				  {
+				  	'has-error':myform.email.$invalid && (!myform.$pristine || myform.$submitted),
+				  	'has-success':myform.email.$valid && (!myform.$pristine || myform.$submitted)
+				  }
+				  ">
+					<input type="email" name="email" placeholder="e.g.@gmail.com" class="form-control" ng-model="formModel.email" ng-required="true">
+					<p class="help-block" ng-show="myform.email.$error.required && (!myform.$pristine || myform.$submitted)">You email is required.</p>
+				  </div>
+				</div>
+			</div><br>		<!-- email row ending -->
+			<div class="row">		<!-- password row starting -->
+				<div class="col-lg-4">
+					Password :
+				</div>
+				<div class="col-lg-8">
+				  <div class="form-group" ng-class="
+				  {
+				  	'has-error':myform.password.$invalid && (!myform.$pristine || myform.$submitted),
+				  	'has-success':myform.password.$valid && (!myform.$pristine || myform.$submitted)
+				  }
+				  ">
+					<input type="Password" name="password" placeholder="e.g. Abc@123" class="form-control" ng-required="true" ng-model="formModel.password" ng-minlength="8">
+					<p class="help-block" ng-show="myform.password.$error.required && (!myform.$pristine || myform.$submitted)">You password is required.</p>
+				  </div>
+				</div>
+			</div>		<!-- password row ending -->
+			<div class="row">		<!-- gender row starting -->
+				<div class="col-lg-4">
+					Gender :
+				</div>
+				<div class="col-lg-8">
+					Male<input type="radio" name="select" checked>
+					Female<input type="radio" name="select">
+					<span id="cnferror"></span>
+				</div>
+			</div>		<!-- gender row ending -->
+			<div class="row">		<!-- country row starting -->
+				<div class="col-lg-4">
+					Country :
+				</div>
+				<div class="col-lg-8">
+					<select>
+						<option ng-repeat="Country in countries | orderBy">{{Country}}</option>
+					</select>
+					<span id="cnferror"></span>
+				</div><br>
+			</div>		<!-- country row ending -->
+			<div class="row">		<!-- Interested in row starting -->
+				<div class="col-lg-4">
+					Interested in :
+				</div>
+				<div class="col-lg-8">
+					Music<input type="checkbox" name="language" checked>
+					Photography<input type="checkbox" name="language"> 
+					Dance<input type="checkbox" name="language">
+					<span id="langerror"></span>
+				</div><br>
+			</div>		<!-- Interested in row ending -->
+			<div class="row">		<!-- Comment row starting -->
+				<div class="col-lg-4">
+					If any message :
+				</div>
+				<div class="col-lg-8">
+				  <div class="form-group" ng-class="
+				  {
+				  	'has-error':myform.comment.$invalid && (!myform.$pristine || myform.$submitted),
+				  	'has-success':myform.comment.$valid && (!myform.$pristine || myform.$submitted)
+				  }
+				  ">
+					<textarea rows="4" cols="50" name="comment" class="form-control" ng-model="formModel.comment" ng-required="true" ng-minlength="10">
+					</textarea>
+					<p class="help-block" ng-show="myform.comment.$error.required && (!myform.$pristine || myform.$submitted)">Give a message atleast 10 characters</p>
+				  </div>
+				</div>
+			</div><br>		<!-- Comment row ending -->
+			<button class="btn-md btn-success pull-right" data-toggle="modal" data-target="">Register >></button>
+ 		</form>
+ 	  </div>		<!-- panel ending -->
+ 	</div>		<!-- validation column ending-->	
+ 	<div class="col-lg-6">  	<!-- image column starting-->
+ 		
+ 	</div>		<!-- image column ending-->
+	  <div id="addBuddy" class="modal fade" role="dialog">		<!-- add Buddy modal starting-->
+	   <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Add Buddy</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="form-group">
+		      <label for="email">Name:</label>
+		      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" ng-model="newBuddy.name">
+		    </div>
+	        <div class="form-group">
+		      <label for="email">Email:</label>
+		      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" ng-model="newBuddy.email">
+		    </div>
+		    <div class="form-group">
+		      <label for="pwd">Mobile No:</label>
+		      <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile No" name="mobile" ng-model="newBuddy.mobile">
+		    </div>
+		    <button type="submit" class="btn btn-default" ng-click="saveBuddy()" data-dismiss="modal">Save</button>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>		<!-- add Buddy modal ending-->
+	<div id="editBuddy" class="modal fade" role="dialog">		<!-- edit Buddy modal starting-->
+	   <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Edit Buddy</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="form-group">
+		      <label for="email">Name:</label>
+		      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" ng-model="clickedBuddy.name">
+		    </div>
+	        <div class="form-group">
+		      <label for="email">Email:</label>
+		      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" ng-model="clickedBuddy.email">
+		    </div>
+		    <div class="form-group">
+		      <label for="pwd">Mobile No:</label>
+		      <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile No" name="mobile" ng-model="clickedBuddy.mobile">
+		    </div>
+		    <button type="submit" class="btn btn-default" ng-click="updateBuddy()" data-dismiss="modal">Save</button>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>		<!-- edit Buddy modal ending-->
+	<div id="deleteBuddy" class="modal fade" role="dialog">		<!-- delete Buddy modal starting-->
+	   <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Delete Buddy</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p style="color: red;">You want to delete <strong>{{clickedBuddy.name}}</strong> from your Buddys list.....!</p>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="deleteBuddy()">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>		<!-- delete Buddy modal ending-->
+</div> 		<!-- container ending -->
+</body>
+</html>
